@@ -19,5 +19,5 @@ public class TaskType {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int taskTypeId;
-	private String Type;
+	private String type;
 }

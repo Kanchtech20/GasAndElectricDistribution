@@ -12,7 +12,10 @@ import com.distribution.dictionary.Status;
 import com.distribution.dictionary.Statuses;
 import com.distribution.dictionary.TaskType;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -32,7 +35,7 @@ public class WorkOrder {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE)
-	private String callId;
+	private Long callId;
 	private int woNumber;
 	
 	@OneToOne
@@ -41,7 +44,8 @@ public class WorkOrder {
 	@OneToMany
 	private List<Skill> skillsRequired;
 	
-    @OneToOne
+	@Enumerated(EnumType.STRING)
+	@Column(name ="status")
 	private Statuses status;
 	
 	@CreationTimestamp
@@ -52,18 +56,23 @@ public class WorkOrder {
 	private long longitute;
 
 	@OneToOne
+	//@Column(nullable=true)
 	private Engineer enginner;
 	
 	@OneToMany
-	private FollowUpOrder followUp;
+	//@Column(nullable=true)
+	private List<FollowUpOrder> followUp;
 	
+	//@Column(nullable=true)
 	private String completedBy;
 	
 	@UpdateTimestamp
 	private Date dateUpdated;
 	
+	//@Column(nullable=true)
 	private LocalDateTime dateCompleted;
 
+	//@Column(nullable=true)
 	private boolean preRequisite;
 	
 	

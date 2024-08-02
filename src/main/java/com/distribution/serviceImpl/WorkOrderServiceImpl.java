@@ -6,11 +6,11 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import com.distribution.exception.*;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.distribution.dictionary.Skill;
 import com.distribution.dictionary.Status;
@@ -21,6 +21,7 @@ import com.distribution.repository.EngineerRepository;
 import com.distribution.repository.WorkOrderRepository;
 import com.distribution.service.WorkOrderService;
 
+@Service
 public class WorkOrderServiceImpl implements WorkOrderService {
 	
 	@Autowired
@@ -29,13 +30,13 @@ public class WorkOrderServiceImpl implements WorkOrderService {
 	//@Autowired
 	//Status status;
 	
-	@Autowired
+	
 	Statuses status;
 	
 	@Autowired
 	EngineerRepository engineerRepo;
 	
-	Logger logger=LogManager.getLogger(WorkOrderService.class);
+	//Logger logger=LogManager.getLogger(WorkOrderService.class);
 
 	/*
 	 * Author:Kanchan Shelar Date : 
@@ -45,9 +46,9 @@ public class WorkOrderServiceImpl implements WorkOrderService {
 	
 	@Override
 	public WorkOrder addOrder(WorkOrder workOrder) {
-		WorkOrder order = null;
+		
           //if(workOrder.getCallId()!=null && workOrder.getStatus()== status.UNASSIGNED) {
-			order=workOrderRepo.save(workOrder);
+			WorkOrder order=workOrderRepo.save(workOrder);
 		//}
 		return order;
 	}
@@ -68,9 +69,9 @@ public class WorkOrderServiceImpl implements WorkOrderService {
 	@Override
 	public boolean voidWorkOrder(String callId) {
         
-        logger.info("Getting order from database");		
+        //logger.info("Getting order from database");		
 		Optional<WorkOrder> order = workOrderRepo.findById(callId);
-		String orderId = order.get().getCallId();
+		Long orderId = order.get().getCallId();
 		
 		if(order.isPresent()) {
 			workOrderRepo.deleteById(orderId);
@@ -83,14 +84,14 @@ public class WorkOrderServiceImpl implements WorkOrderService {
 	@Override
 	public WorkOrder completeOrder(String callId) {
 		
-		logger.info("Getting order from database");
+		//logger.info("Getting order from database");
 		Optional<WorkOrder> order = workOrderRepo.findById(callId);
 		WorkOrder workInformation = order.get();
 		List<Skill> skillsRequired = workInformation.getSkillsRequired();
 		   //List of Engineers who has exact same skills
 		
 		List<Engineer> engineers = engineerRepo.findBySkills(skillsRequired);
-		logger.info("Retured list of Enginners from database now need to check for empty");
+		//logger.info("Retured list of Enginners from database now need to check for empty");
 		
 		if(order.isPresent()) {
 			if(engineers.isEmpty()) {
@@ -100,7 +101,7 @@ public class WorkOrderServiceImpl implements WorkOrderService {
 			else {
 			      for(Engineer eng:engineers) {
 				      if(eng.getLatitute()<=workInformation.getLatitute() && eng.getLongitute()<=workInformation.getLongitute()) {
-				    	  logger.info("Enginner found with near location");
+				    	  //logger.info("Enginner found with near location");
 				    	  workInformation.setEnginner(eng);
 				    	  workInformation.setStatus(status.COUMPLETE);
 				    	  workInformation.setCompletedBy(eng.getName());

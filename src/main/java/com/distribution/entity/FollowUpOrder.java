@@ -29,7 +29,7 @@ public class FollowUpOrder {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE)
-	private String callId;
+	private Long callId;
 	private int WoNumber;
 
 	@ManyToOne

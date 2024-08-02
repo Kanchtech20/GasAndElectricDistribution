@@ -13,5 +13,5 @@ import com.distribution.entity.WorkOrder;
 @Repository
 public interface WorkOrderRepository extends JpaRepository<WorkOrder,Serializable> {
 
-	public List<Engineer> findBySkills(List<Skill> skills);
+	
 }
